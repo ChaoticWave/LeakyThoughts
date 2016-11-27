@@ -98,7 +98,7 @@ class Load extends LeakyCommand
                 $this->writeJsonFile($_part, $path . DIRECTORY_SEPARATOR . $_file . '.json');
             }
 
-            //  
+            //
             if ($this->outputJson) {
                 $this->writeJsonFile($_part, $path . DIRECTORY_SEPARATOR . $_file . '.json');
             }
