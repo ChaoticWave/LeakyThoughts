@@ -51,8 +51,17 @@ class Admin extends LeakyCommand
         $_params = ['index' => $index];
 
         if ($_ixClient->exists($_params)) {
+            $this->output->writeln('<info>Deleting index: ' . $index);
             $_ixClient->delete($_params);
-            $this->output->writeln('<comment>NOTE</comment> existing index deleted.');
+
+            $_params['index'] = '.kibana';
+
+            if ($_ixClient->exists($_params)) {
+                $this->output->writeln('<info>Deleting index: .kibana');
+                $_ixClient->delete($_params);
+            }
+
+            $this->output->writeln('<comment>NOTE</comment> existing indices deleted.');
         }
 
         if (is_readable($_setFile = resource_path('/views/elastic/analysis/' . config('app.locale') . '.json'))) {
@@ -62,7 +71,7 @@ class Admin extends LeakyCommand
             $this->output->writeln('Index <info>' . $index . '</info> analysis configured.');
 
             $_ixClient->putMapping(array_merge($_params, ['type' => 'mail', 'body' => MailParser::getMapping()]));
-            $this->output->writeln('Index < info>' . $index . ' </info > mapped . ');
+            $this->output->writeln('Index <info>' . $index . ' </info> mapped.');
         }
 
         return $_result;

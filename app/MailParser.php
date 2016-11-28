@@ -1,5 +1,6 @@
 <?php namespace ChaoticWave\LeakyThoughts;
 
+use ChaoticWave\BlueVelvet\Utility\Words;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use PhpMimeMailParser\Parser;
@@ -54,6 +55,7 @@ class MailParser extends Parser implements Arrayable, Jsonable
         $_base['spam_score'] = array_get($_headers, 'x-spam');
         $_base['source_ip'] = $_sourceIp = str_replace(['[', ']'], null, array_get($_headers, 'x-source-ip'));
         $_base['source_hostname'] = empty($_sourceIp) ? null : gethostbyaddr($_sourceIp);
+        $_text = $this->getMessageBody('text');
 
         return array_merge($_base,
             [
@@ -65,12 +67,12 @@ class MailParser extends Parser implements Arrayable, Jsonable
                     'bcc'  => $this->getAddresses('bcc'),
                 ],
                 'subject'     => $this->getHeader('subject'),
-                // 'body'        => [
-                //     'text'         => $this->getMessageBody('text'),
-                //     'html'         => $this->getMessageBody('html'),
-                //     'htmlEmbedded' => $this->getMessageBody('htmlEmbedded'),
-                // ],
-                'body_text'   => $this->getMessageBody('text'),
+                'body'        => [
+                    'text'         => $_text,
+                    'html'         => $this->getMessageBody('html'),
+                    'htmlEmbedded' => $this->getMessageBody('htmlEmbedded'),
+                ],
+                'body_text'   => implode(' ', array_except(Words::extract($this->getMessageBody('text')), config('leaky.elastic.exclude-words', []))),
                 'attachments' => $this->getAttachments(),
             ]);
     }
@@ -82,7 +84,7 @@ class MailParser extends Parser implements Arrayable, Jsonable
     {
         return [
             'properties' => [
-                'body_text' => ['type' => 'string', 'analyzer' => 'english'],
+                'body_text' => ['type' => 'string', 'index' => 'not_analyzed'],
             ],
         ];
     }

@@ -24,8 +24,11 @@
             },
             "analyzer": {
                 "english": {
-                    "tokenizer": "standard",
-                    "filter":    [
+                    "tokenizer":   "standard",
+                    "char_filter": [
+                        "html_strip"
+                    ],
+                    "filter":      [
                         "english_possessive_stemmer",
                         "lowercase",
                         "english_stop",
