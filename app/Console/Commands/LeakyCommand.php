@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use ChaoticWave\BlueVelvet\Console\Commands\BaseCommand;
+use ChaoticWave\LeakyThoughts\MailParser;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
@@ -15,6 +16,10 @@ abstract class LeakyCommand extends BaseCommand
      * @var Client
      */
     protected static $client;
+    /**
+     * @var MailParser
+     */
+    protected static $parser;
 
     //******************************************************************************
     //* Methods
@@ -98,7 +103,17 @@ abstract class LeakyCommand extends BaseCommand
             }
         }
 
-        return (null === static::$client || $reload) ? static::$client = ClientBuilder::fromConfig($config) : static::$client;
+        return (!static::$client || $reload) ? static::$client = ClientBuilder::fromConfig($config) : static::$client;
+    }
+
+    /**
+     * @param bool $reload
+     *
+     * @return \ChaoticWave\LeakyThoughts\MailParser
+     */
+    protected static function getParser($reload = false)
+    {
+        return (!static::$parser || $reload) ? static::$parser = new MailParser() : static::$parser;
     }
 
     /**
