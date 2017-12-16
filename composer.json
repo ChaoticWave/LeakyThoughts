@@ -1,21 +1,21 @@
 {
-    "name":         "chaoticwave/leakey",
-    "description":  "Email file importer",
-    "keywords":     [
+    "name":        "chaoticwave/leaky-thoughts",
+    "description": "Email file importer",
+    "keywords":    [
         "php",
         "email",
         "wikileaks"
     ],
-    "license":      "MIT",
-    "type":         "project",
-    "require":      {
+    "license":     "MIT",
+    "type":        "project",
+    "require":     {
         "php":                                       ">=5.6.4",
         "laravel/framework":                         "5.3.*",
         "chaoticwave/blue-velvet":                   "1.0.*",
         "php-mime-mail-parser/php-mime-mail-parser": "^2.6",
         "elasticsearch/elasticsearch":               "^5.0"
     },
-    "require-dev":  {
+    "require-dev": {
         "fzaninotto/faker":            "~1.4",
         "mockery/mockery":             "0.9.*",
         "phpunit/phpunit":             "~5.0",

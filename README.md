@@ -22,5 +22,8 @@ At this point it's very simplistic. It parses the files and mimics a Logstash fo
  
 More documentation will be forthcoming.
 
+## Elastic Stack
+Here are some examples on getting your Elastic Stack up and running: https://github.com/elastic/examples
+
 ## License
 LeakyThoughts is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
